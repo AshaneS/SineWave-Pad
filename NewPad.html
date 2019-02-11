@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="pad.css">
+    <title>Document</title>
+</head>
+<body>
+        <h1> SINEWAVE PAD</h1>
+
+        <div class="pad">
+          <div class="box pad-1 " data-code="82">A</div>
+          <div class="box pad-2" data-code="84">B</div>
+          <div class="box pad-3" data-code="89">C</div>
+          <div id = "volumeup" class="box pad-4" data-code="85">VolumeUP</div>
+          
+          <div class="box pad-5" data-code="70">D</div>
+          <div class="box pad-6" data-code="71">F</div>
+          <div class="box pad-7" data-code="72">G</div>
+          <div id = "volumedown" class="box pad-8" data-code="74">VolumeDown</div>
+          
+        </div>
+
+        <script src="http://reverbjs.org/reverb.js"></script>
+
+        <script>
+            var context = new AudioContext();
+            
+            var volume = context.createGain();
+            var now = context.currentTime;
+            volume.gain.value = 0;
+            currgain = volume.gain.value;
+            var oscillator1;
+            var oscillator2;
+            var oscillator3;
+            var oscillator4;
+            var oscillator5;
+            var oscillator6;
+
+
+            //USING reverb.js
+            reverbjs.extend(context);
+            var reverbUrl = "http://reverbjs.org/Library/FalklandPalaceRoyalTennisCourt.m4a"
+            var reverbNode = context.createReverbFromUrl(reverbUrl, function() {
+            reverbNode.connect(volume);
+});
+         
+         
+            window.addEventListener("keydown", function(event){
+            switch(event.key){
+              case "a":
+              if(event.keyCode ==65){
+               console.log("a down");
+               start1();
+              }
+              case "s":
+              if(event.keyCode ==83){
+               console.log("s down");
+               start2();
+              }
+              case "d":
+              if(event.keyCode ==68){
+               console.log("d down");
+               start3();
+              }
+              case "f":
+              if(event.keyCode ==70){
+               console.log("f down");
+               start4();
+              }
+              case "g":
+              if(event.keyCode ==71){
+               console.log("g down");
+               start5();
+              }
+              case "h":
+              if(event.keyCode ==72){
+               console.log("g down");
+               start6();
+              }
+              break;
+            }
+           });
+         
+           window.addEventListener("keyup", function(event){
+         
+             switch(event.key){
+               case "a":
+               if(event.keyCode ==65){
+               console.log("a up");
+               stop1();
+               break
+              }
+         
+              case "s":
+               if(event.keyCode ==83){
+               console.log("s up");
+               stop2();
+               break
+              }
+              case "d":
+              if(event.keyCode ==68){
+               console.log("d up");
+               stop3();
+               break
+              }
+              case "f":
+              if(event.keyCode ==70){
+               console.log("f up");
+               stop4();
+               break
+              }
+              case "g":
+              if(event.keyCode ==71){
+               console.log("g up");
+               stop5();
+               break
+              }
+              case "h":
+              if(event.keyCode ==72){
+               console.log("h up");
+               stop6();
+               break
+              }
+               break
+             }
+         
+           });
+         
+           //Oscillator 1
+             function start1() {
+             oscillator1 = context.createOscillator();
+             oscillator1.frequency.value = 261.63;
+             oscillator1.type = "sine";
+             oscillator1.start();
+             oscillator1.connect(volume);
+             oscillator1.connect(reverbNode);
+           }
+           function stop1() {
+             oscillator1.stop();
+           }
+          
+           //Oscillator2
+           function start2() {
+             oscillator2 = context.createOscillator();
+             oscillator2.frequency.value = 293.66;
+             oscillator2.type = "sine";
+             oscillator2.start();
+         
+             oscillator2.connect(volume);
+             oscillator2.connect(reverbNode);
+           }
+           function stop2() {
+             oscillator2.stop();
+           }
+            //Oscillator3
+            function start3() {
+             oscillator3 = context.createOscillator();
+             oscillator3.frequency.value = 329.63;
+             oscillator3.type = "sine";
+             oscillator3.start();
+         
+             oscillator3.connect(volume);
+             oscillator3.connect(reverbNode);
+
+           }
+           function stop3() {
+             oscillator3.stop();
+           }
+         
+           //Oscillator4
+           function start4() {
+             oscillator4 = context.createOscillator();
+             oscillator4.frequency.value = 349.23;
+             oscillator4.type = "sine";
+             oscillator4.start();
+         
+             oscillator4.connect(volume);
+             oscillator4.connect(reverbNode);
+           }
+           function stop4() {
+             oscillator4.stop();
+           }
+         //Oscillator5
+         function start5() {
+             oscillator5 = context.createOscillator();
+             oscillator5.frequency.value = 392.00;
+             oscillator5.type = "sine";
+             oscillator5.start();
+         
+             oscillator5.connect(volume);
+             oscillator5.connect(reverbNode);
+           }
+           function stop5() {
+             oscillator5.stop();
+           }
+         
+           //Oscillator6
+         function start6() {
+             oscillator6 = context.createOscillator();
+             oscillator6.frequency.value = 440.00;
+             oscillator6.type = "sine";
+             oscillator6.start();
+         
+             oscillator6.connect(volume);
+             oscillator6.connect(reverbNode);
+           }
+           function stop6() {
+             oscillator6.stop();
+           }
+         
+           //volume
+           document.querySelector("#volumeup").addEventListener('click', function() {
+             if(currgain<=1){
+             currgain = currgain + 0.1;
+             volume.gain.setValueAtTime(currgain, now + 1);
+             console.log("volume level " + currgain);
+             }
+             else{
+               currgain = currgain;
+             }
+           });
+           document.querySelector("#volumedown").addEventListener('click', function() { 
+           // here your code 
+             if(currgain<=0){
+               currgain = 0;
+             }
+             else{
+             currgain = currgain - 0.1;
+             volume.gain.setValueAtTime(currgain, now+1);
+             console.log("volume level " +currgain);
+             } 
+        });
+         
+           volume.connect(context.destination);
+         
+         
+         </script>
+    
+</body>
+</html>
